@@ -10,15 +10,12 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class NewsHubApplication {
 
-	@Value("${api.url}")
-	private String baseUrl;
-
 	public static void main(String[] args) {
 		SpringApplication.run(NewsHubApplication.class, args);
 	}
 
 	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.rootUri(baseUrl).build();
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 }
