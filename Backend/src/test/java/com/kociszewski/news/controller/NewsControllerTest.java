@@ -1,18 +1,29 @@
 package com.kociszewski.news.controller;
 
+import com.kociszewski.news.component.NewsRestTemplate;
+import com.kociszewski.news.entity.Article;
+import com.kociszewski.news.entity.News;
+import com.kociszewski.news.service.NewsService;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.not;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,8 +39,24 @@ public class NewsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private NewsService newsService;
+
+    private List<Article> articles;
+
+    @Before
+    public void before() {
+        articles = new ArrayList<>();
+        articles.add(new Article("Author", "Title",
+                "Description", "Date", "SourceName",
+                "ArticleUrl", "ImageUrl"));
+    }
+
     @Test
     public void getNews_shouldReturnNews() throws Exception {
+        given(newsService.getNewsByCountryAndCategory("pl", "technology")).
+                willReturn(new News("pl", "technology", articles));
+
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("country").value("pl"))

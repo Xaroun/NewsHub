@@ -12,6 +12,19 @@ public class Article {
     private String articleUrl;
     private String imageUrl;
 
+    public Article() {
+    }
+
+    public Article(String author, String title, String description, String date, String sourceName, String articleUrl, String imageUrl) {
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.sourceName = sourceName;
+        this.articleUrl = articleUrl;
+        this.imageUrl = imageUrl;
+    }
+
     public String getAuthor() {
         return author;
     }

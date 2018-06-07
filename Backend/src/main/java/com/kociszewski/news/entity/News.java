@@ -11,6 +11,15 @@ public class News {
     private String category;
     private List<Article> articles;
 
+    public News() {
+    }
+
+    public News(String country, String category, List<Article> articles) {
+        this.country = country;
+        this.category = category;
+        this.articles = articles;
+    }
+
     public void setCountry(String country) {
         this.country = country;
     }

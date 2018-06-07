@@ -34,10 +34,7 @@ public class NewsIntegrationTest {
         assertThat(response.getBody().getArticles().size()).isNotEqualTo(0);
         Article article = response.getBody().getArticles().get(0);
         assertThat(article.getArticleUrl()).isNotEmpty();
-        assertThat(article.getAuthor()).isNotEmpty();
         assertThat(article.getDate()).isNotEmpty();
-        assertThat(article.getDescription()).isNotEmpty();
-        assertThat(article.getImageUrl()).isNotEmpty();
         assertThat(article.getSourceName()).isNotEmpty();
         assertThat(article.getTitle()).isNotEmpty();
     }
