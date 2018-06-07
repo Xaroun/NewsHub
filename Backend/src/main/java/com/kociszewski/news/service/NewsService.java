@@ -5,6 +5,8 @@ import com.kociszewski.news.entity.Article;
 import com.kociszewski.news.entity.ExternalArticle;
 import com.kociszewski.news.entity.ExternalNews;
 import com.kociszewski.news.entity.News;
+import com.kociszewski.news.exception.NewsNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +25,20 @@ public class NewsService {
         this.newsRestTemplate = newsRestTemplate;
     }
 
-    public News getNewsByCountryAndCategory(String country, String category) {
+    public News getNewsByCountryAndCategory(String country, String category) throws NewsNotFoundException {
         String uri = String.format("/top-headlines?country=%s&category=%s", country, category);
         ResponseEntity<ExternalNews> result = newsRestTemplate.getRequest(uri, ExternalNews.class);
-        List<ExternalArticle> externalArticles = result.getBody().getArticles();
 
-        List<Article> articles = externalArticles.stream().map(extArticle ->
+        if(HttpStatus.NOT_FOUND.equals(result.getStatusCode())) {
+            throw new NewsNotFoundException();
+        }
+
+        List<Article> articles = parseExternalArticles(result.getBody().getArticles());
+        return new News(country, category, articles);
+    }
+
+    private List<Article> parseExternalArticles(List<ExternalArticle> externalArticles) {
+        return externalArticles.stream().map(extArticle ->
                 new Article(extArticle.getAuthor(),
                         extArticle.getTitle(),
                         extArticle.getDescription(),
@@ -37,7 +47,5 @@ public class NewsService {
                         extArticle.getUrl(),
                         extArticle.getUrlToImage()))
                 .collect(Collectors.toList());
-
-       return new News(country, category, articles);
     }
 }
