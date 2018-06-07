@@ -22,11 +22,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class NewsIntegrationTest {
 
-    private final TestRestTemplate testRestTemplate;
-
-    public NewsIntegrationTest(TestRestTemplate testRestTemplate) {
-        this.testRestTemplate = testRestTemplate;
-    }
+    @Autowired
+    private TestRestTemplate testRestTemplate;
 
     @Test
     public void getTechnologyNewsFromPoland_returnsProperNewsObject() {
