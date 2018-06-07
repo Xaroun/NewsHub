@@ -3,6 +3,7 @@ package com.kociszewski.news.controller;
 import com.kociszewski.news.component.NewsRestTemplate;
 import com.kociszewski.news.entity.Article;
 import com.kociszewski.news.entity.News;
+import com.kociszewski.news.exception.NewsNotFoundException;
 import com.kociszewski.news.service.NewsService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -24,6 +25,8 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,6 +38,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(NewsController.class)
 public class NewsControllerTest {
+
+    private static final String PL = "pl";
+    private static final String TECHNOLOGY = "technology";
 
     @Autowired
     private MockMvc mockMvc;
@@ -53,14 +59,27 @@ public class NewsControllerTest {
     }
 
     @Test
-    public void getNews_shouldReturnNews() throws Exception {
-        given(newsService.getNewsByCountryAndCategory("pl", "technology")).
-                willReturn(new News("pl", "technology", articles));
+    public void getTechnologyNewsFromPoland_shouldReturnProperNews() throws Exception {
+        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).
+                willReturn(new News(PL, TECHNOLOGY, articles));
 
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("country").value("pl"))
-                .andExpect(jsonPath("category").value("technology"))
+                .andExpect(jsonPath("country").value(PL))
+                .andExpect(jsonPath("category").value(TECHNOLOGY))
                 .andExpect(jsonPath("articles", hasSize(greaterThan(0))));
+
+        verify(newsService, times(1)).getNewsByCountryAndCategory(PL, TECHNOLOGY);
     }
+
+    @Test
+    public void getTechnologyNewsFromPoland_notFound() throws Exception {
+        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new NewsNotFoundException());
+
+        mockMvc.perform(get("/news/pl/technology"))
+                .andExpect(status().isNotFound());
+
+        verify(newsService, times(1)).getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any());
+    }
+
 }
