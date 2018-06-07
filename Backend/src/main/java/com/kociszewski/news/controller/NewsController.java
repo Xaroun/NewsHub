@@ -10,6 +10,9 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class NewsController {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+
+    public NewsController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 }
