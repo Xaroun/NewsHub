@@ -12,14 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 class HttpEntityBuilder {
 
-    private final String AUTHORIZATION = "Authorization";
-    private final String BEARER = "Bearer %s";
-
     @Value("${api.key}")
     private String apiKey;
 
     <T> HttpEntity<T> buildHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
+        String BEARER = "Bearer %s";
+        String AUTHORIZATION = "Authorization";
         headers.set(AUTHORIZATION, String.format(BEARER, apiKey));
         return new HttpEntity<>(headers);
     }

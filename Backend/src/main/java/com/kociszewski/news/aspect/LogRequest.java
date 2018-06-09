@@ -22,7 +22,7 @@ import java.time.Instant;
 @Aspect
 public class LogRequest {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Pointcut("execution(public org.springframework.http.ResponseEntity com.kociszewski.news.controller.*.*(..))")
     public void controllersWithResponseEntity() {
@@ -36,7 +36,7 @@ public class LogRequest {
         Instant start = Instant.now();
         ResponseEntity<?> responseEntity = (ResponseEntity<?>) proceedingJoinPoint.proceed();
         Instant end = Instant.now();
-        Double invocationTimeInSeconds = Double.valueOf(Duration.between(start, end).toMillis()) / 1000;
+        Double invocationTimeInSeconds = (double) Duration.between(start, end).toMillis() / 1000;
 
         String log = String.format("[%s] request on [%s] from [%s] took [%.2f]s with code [%s]",
                 request.getMethod(),

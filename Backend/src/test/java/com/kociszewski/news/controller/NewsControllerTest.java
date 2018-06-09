@@ -4,7 +4,6 @@ import com.kociszewski.news.common.TestParent;
 import com.kociszewski.news.exception.NewsNotFoundException;
 import com.kociszewski.news.exception.UnauthorizedException;
 import com.kociszewski.news.service.NewsService;
-import com.kociszewski.news.service.NewsServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -14,7 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.not;
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
@@ -41,7 +41,7 @@ public class NewsControllerTest extends TestParent {
     @Test
     public void getTechnologyNewsFromPoland_shouldReturnProperNews() throws Exception {
         given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).
-                willReturn(getNews());
+                willReturn(Optional.of(getNews()));
 
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isOk())
@@ -54,7 +54,7 @@ public class NewsControllerTest extends TestParent {
 
     @Test
     public void getTechnologyNewsFromPoland_notFound() throws Exception {
-        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new NewsNotFoundException("News not found"));
+        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new NewsNotFoundException());
 
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isNotFound());
@@ -64,7 +64,7 @@ public class NewsControllerTest extends TestParent {
 
     @Test
     public void getTechnologyNewsFromPoland_withInvalidApiKey() throws Exception {
-        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new UnauthorizedException("Invalid API key"));
+        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new UnauthorizedException());
 
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isUnauthorized());

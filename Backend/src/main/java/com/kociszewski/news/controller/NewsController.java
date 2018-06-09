@@ -2,7 +2,6 @@ package com.kociszewski.news.controller;
 
 import com.kociszewski.news.entity.News;
 import com.kociszewski.news.service.NewsService;
-import com.kociszewski.news.service.NewsServiceImpl;
 import io.swagger.annotations.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +33,6 @@ public class NewsController {
     })
     public ResponseEntity<News> getNewsByCountryAndCategory(@PathVariable String country, @PathVariable String category) {
         Optional<News> news = newsService.getNewsByCountryAndCategory(country, category);
-        if(news.isPresent()) {
-            return ResponseEntity.ok(news.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return news.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

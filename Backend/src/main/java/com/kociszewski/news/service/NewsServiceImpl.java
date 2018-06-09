@@ -5,8 +5,6 @@ import com.kociszewski.news.entity.Article;
 import com.kociszewski.news.entity.ExternalArticle;
 import com.kociszewski.news.entity.ExternalNews;
 import com.kociszewski.news.entity.News;
-import com.kociszewski.news.exception.NewsNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;

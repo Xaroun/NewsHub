@@ -25,7 +25,7 @@ public class NewsServiceTest extends TestParent{
 
     @Test
     public void getNews_returnsNewsDetails() {
-        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).willReturn(getNews());
+        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).willReturn(Optional.of(getNews()));
 
         Optional<News> news = newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY);
 
