@@ -6,6 +6,7 @@ import org.junit.Before;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by mateusz on 09.06.2018.
@@ -15,7 +16,7 @@ public class TestParent {
     public static final String PL = "pl";
     public static final String TECHNOLOGY = "technology";
     private List<Article> articles;
-    private News news;
+    private Optional<News> news;
 
     @Before
     public void before() {
@@ -30,11 +31,11 @@ public class TestParent {
                 .imageUrl("ImageURL")
                 .build());
 
-        news = News.builder()
+        news = Optional.of(News.builder()
                 .country(PL)
                 .category(TECHNOLOGY)
                 .articles(articles)
-                .build();
+                .build());
     }
 
     public List<Article> getArticles() {
@@ -45,11 +46,11 @@ public class TestParent {
         this.articles = articles;
     }
 
-    public News getNews() {
+    public Optional<News> getNews() {
         return news;
     }
 
-    public void setNews(News news) {
+    public void setNews(Optional<News> news) {
         this.news = news;
     }
 }

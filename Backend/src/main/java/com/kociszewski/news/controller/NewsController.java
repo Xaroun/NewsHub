@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 /**
  * Created by mateusz on 06.06.2018.
  */
@@ -31,7 +33,11 @@ public class NewsController {
             @ApiImplicitParam(name = "category", value = "Category (for example technology/health)", required = true)
     })
     public ResponseEntity<News> getNewsByCountryAndCategory(@PathVariable String country, @PathVariable String category) {
-        News news = newsService.getNewsByCountryAndCategory(country, category);
-        return ResponseEntity.ok(news);
+        Optional<News> news = newsService.getNewsByCountryAndCategory(country, category);
+        if(news.isPresent()) {
+            return ResponseEntity.ok(news.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -40,7 +40,7 @@ public class NewsRestTemplate {
                 case UNAUTHORIZED:
                     throw new UnauthorizedException("Invalid API key");
                 case NOT_FOUND:
-                    throw new NewsNotFoundException("News not found");
+                    throw ex;
             }
         }
         return ResponseEntity.notFound().build();

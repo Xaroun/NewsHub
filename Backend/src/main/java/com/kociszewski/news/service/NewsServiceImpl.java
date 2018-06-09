@@ -9,8 +9,10 @@ import com.kociszewski.news.exception.NewsNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -25,16 +27,22 @@ public class NewsServiceImpl implements NewsService{
         this.newsRestTemplate = newsRestTemplate;
     }
 
-    public News getNewsByCountryAndCategory(String country, String category){
+    public Optional<News> getNewsByCountryAndCategory(String country, String category){
         String uri = String.format("/top-headlines?country=%s&category=%s", country, category);
-        ResponseEntity<ExternalNews> result = newsRestTemplate.getRequest(uri, ExternalNews.class);
+        ResponseEntity<ExternalNews> result;
+
+        try {
+           result = newsRestTemplate.getRequest(uri, ExternalNews.class);
+        } catch (HttpClientErrorException ex) {
+            return Optional.empty();
+        }
 
         List<Article> articles = parseExternalArticles(result.getBody().getArticles());
-        return News.builder()
+        return Optional.of(News.builder()
                 .country(country)
                 .category(category)
                 .articles(articles)
-                .build();
+                .build());
     }
 
     private List<Article> parseExternalArticles(List<ExternalArticle> externalArticles) {

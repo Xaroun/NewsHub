@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -25,21 +27,21 @@ public class NewsServiceTest extends TestParent{
     public void getNews_returnsNewsDetails() {
         given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).willReturn(getNews());
 
-        News news = newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY);
+        Optional<News> news = newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY);
 
-        assertThat(news.getCountry()).isEqualTo(PL);
-        assertThat(news.getCategory()).isEqualTo(TECHNOLOGY);
-        assertThat(news.getArticles()).hasSize(1);
+        assertThat(news.get().getCountry()).isEqualTo(PL);
+        assertThat(news.get().getCategory()).isEqualTo(TECHNOLOGY);
+        assertThat(news.get().getArticles()).hasSize(1);
 
         verify(newsService, times(1)).getNewsByCountryAndCategory(PL, TECHNOLOGY);
     }
 
     @Test
     public void getNews_returnsNewsNotFound() throws Exception{
-        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).willReturn(null);
-        News news = newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY);
+        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).willReturn(Optional.empty());
+        Optional<News> news = newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY);
 
-        assertThat(news).isEqualTo(null);
+        assertThat(!news.isPresent());
 
         verify(newsService, times(1)).getNewsByCountryAndCategory(PL, TECHNOLOGY);
     }

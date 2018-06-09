@@ -3,9 +3,11 @@ package com.kociszewski.news.service;
 import com.kociszewski.news.entity.News;
 import com.kociszewski.news.exception.NewsNotFoundException;
 
+import java.util.Optional;
+
 /**
  * Created by mateusz on 09.06.2018.
  */
 public interface NewsService {
-    News getNewsByCountryAndCategory(String country, String category) throws NewsNotFoundException;
+    Optional<News> getNewsByCountryAndCategory(String country, String category) throws NewsNotFoundException;
 }
