@@ -1,28 +1,19 @@
 package com.kociszewski.news.controller;
 
 import com.kociszewski.news.common.TestParent;
-import com.kociszewski.news.component.NewsRestTemplate;
-import com.kociszewski.news.entity.Article;
-import com.kociszewski.news.entity.News;
 import com.kociszewski.news.exception.NewsNotFoundException;
 import com.kociszewski.news.service.NewsService;
-import org.hamcrest.Matchers;
-import org.junit.Before;
+import com.kociszewski.news.service.NewsServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.not;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
