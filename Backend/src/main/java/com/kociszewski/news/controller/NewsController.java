@@ -3,6 +3,7 @@ package com.kociszewski.news.controller;
 import com.kociszewski.news.entity.News;
 import com.kociszewski.news.service.NewsService;
 import com.kociszewski.news.service.NewsServiceImpl;
+import io.swagger.annotations.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,11 @@ public class NewsController {
     }
 
     @GetMapping(value = "/{country}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("Get news by country and category")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "country", value = "Country shortcut (for example pl/en/de)", required = true),
+            @ApiImplicitParam(name = "category", value = "Category (for example technology/health)", required = true)
+    })
     public ResponseEntity<News> getNewsByCountryAndCategory(@PathVariable String country, @PathVariable String category) {
         News news = newsService.getNewsByCountryAndCategory(country, category);
         return ResponseEntity.ok(news);
