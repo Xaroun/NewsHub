@@ -1,5 +1,6 @@
 package com.kociszewski.news.controller;
 
+import com.kociszewski.news.common.TestParent;
 import com.kociszewski.news.component.NewsRestTemplate;
 import com.kociszewski.news.entity.Article;
 import com.kociszewski.news.entity.News;
@@ -37,10 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest(NewsController.class)
-public class NewsControllerTest {
-
-    private static final String PL = "pl";
-    private static final String TECHNOLOGY = "technology";
+public class NewsControllerTest extends TestParent {
 
     @Autowired
     private MockMvc mockMvc;
@@ -48,20 +46,10 @@ public class NewsControllerTest {
     @MockBean
     private NewsService newsService;
 
-    private List<Article> articles;
-
-    @Before
-    public void before() {
-        articles = new ArrayList<>();
-        articles.add(new Article("Author", "Title",
-                "Description", "Date", "SourceName",
-                "ArticleUrl", "ImageUrl"));
-    }
-
     @Test
     public void getTechnologyNewsFromPoland_shouldReturnProperNews() throws Exception {
         given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).
-                willReturn(new News(PL, TECHNOLOGY, articles));
+                willReturn(getNews());
 
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isOk())

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static com.kociszewski.news.common.TestParent.PL;
+import static com.kociszewski.news.common.TestParent.TECHNOLOGY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
@@ -29,8 +31,8 @@ public class NewsIntegrationTest {
     public void getTechnologyNewsFromPoland_returnsProperNewsObject() {
         ResponseEntity<News> response = testRestTemplate.getForEntity("/news/pl/technology", News.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().getCountry()).isEqualTo("pl");
-        assertThat(response.getBody().getCategory()).isEqualTo("technology");
+        assertThat(response.getBody().getCountry()).isEqualTo(PL);
+        assertThat(response.getBody().getCategory()).isEqualTo(TECHNOLOGY);
         assertThat(response.getBody().getArticles().size()).isNotEqualTo(0);
         Article article = response.getBody().getArticles().get(0);
         assertThat(article.getArticleUrl()).isNotEmpty();

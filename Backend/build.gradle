@@ -10,6 +10,11 @@ buildscript {
 	}
 }
 
+// Gradle plugin making it easier/safer to use Java annotation processors
+plugins {
+	id 'net.ltgt.apt' version '0.10'
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
@@ -23,10 +28,12 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-cache')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-aop')
+
+	compileOnly 'org.projectlombok:lombok:1.18.0'
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

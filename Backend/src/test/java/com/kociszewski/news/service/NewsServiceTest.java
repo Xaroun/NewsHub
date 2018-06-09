@@ -1,5 +1,6 @@
 package com.kociszewski.news.service;
 
+import com.kociszewski.news.common.TestParent;
 import com.kociszewski.news.entity.Article;
 import com.kociszewski.news.entity.News;
 import com.kociszewski.news.exception.NewsNotFoundException;
@@ -21,27 +22,14 @@ import static org.mockito.Mockito.verify;
  * Created by mateusz on 07.06.2018.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NewsServiceTest {
-
-    private static final String PL = "pl";
-    private static final String TECHNOLOGY = "technology";
+public class NewsServiceTest extends TestParent{
 
     @Mock
     private NewsService newsService;
 
-    private List<Article> articles;
-
-    @Before
-    public void before() {
-        articles = new ArrayList<>();
-        articles.add(new Article("Author", "Title",
-                "Description", "Date", "SourceName",
-                "ArticleUrl", "ImageUrl"));
-    }
-
     @Test
     public void getNews_returnsNewsDetails() {
-        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).willReturn(new News(PL, TECHNOLOGY, articles));
+        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).willReturn(getNews());
 
         News news = newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY);
 

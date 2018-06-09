@@ -34,18 +34,24 @@ public class NewsService {
         }
 
         List<Article> articles = parseExternalArticles(result.getBody().getArticles());
-        return new News(country, category, articles);
+        return News.builder()
+                .country(country)
+                .category(category)
+                .articles(articles)
+                .build();
     }
 
     private List<Article> parseExternalArticles(List<ExternalArticle> externalArticles) {
         return externalArticles.stream().map(extArticle ->
-                new Article(extArticle.getAuthor(),
-                        extArticle.getTitle(),
-                        extArticle.getDescription(),
-                        extArticle.getPublishedAt(),
-                        extArticle.getSource().getName(),
-                        extArticle.getUrl(),
-                        extArticle.getUrlToImage()))
+                Article.builder()
+                        .author(extArticle.getAuthor())
+                        .title(extArticle.getTitle())
+                        .description(extArticle.getDescription())
+                        .date(extArticle.getPublishedAt())
+                        .sourceName(extArticle.getSource().getName())
+                        .articleUrl(extArticle.getUrl())
+                        .imageUrl(extArticle.getUrlToImage())
+                        .build())
                 .collect(Collectors.toList());
     }
 }
