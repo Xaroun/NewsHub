@@ -2,6 +2,7 @@ package com.kociszewski.news.controller;
 
 import com.kociszewski.news.common.TestParent;
 import com.kociszewski.news.exception.NewsNotFoundException;
+import com.kociszewski.news.exception.UnauthorizedException;
 import com.kociszewski.news.service.NewsService;
 import com.kociszewski.news.service.NewsServiceImpl;
 import org.junit.Test;
@@ -53,10 +54,20 @@ public class NewsControllerTest extends TestParent {
 
     @Test
     public void getTechnologyNewsFromPoland_notFound() throws Exception {
-        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new NewsNotFoundException());
+        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new NewsNotFoundException("News not found"));
 
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isNotFound());
+
+        verify(newsService, times(1)).getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any());
+    }
+
+    @Test
+    public void getTechnologyNewsFromPoland_withInvalidApiKey() throws Exception {
+        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new UnauthorizedException("Invalid API key"));
+
+        mockMvc.perform(get("/news/pl/technology"))
+                .andExpect(status().isUnauthorized());
 
         verify(newsService, times(1)).getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any());
     }

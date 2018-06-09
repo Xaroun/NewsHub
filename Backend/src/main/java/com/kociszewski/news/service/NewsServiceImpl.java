@@ -25,13 +25,9 @@ public class NewsServiceImpl implements NewsService{
         this.newsRestTemplate = newsRestTemplate;
     }
 
-    public News getNewsByCountryAndCategory(String country, String category) throws NewsNotFoundException {
+    public News getNewsByCountryAndCategory(String country, String category){
         String uri = String.format("/top-headlines?country=%s&category=%s", country, category);
         ResponseEntity<ExternalNews> result = newsRestTemplate.getRequest(uri, ExternalNews.class);
-
-        if(HttpStatus.NOT_FOUND.equals(result.getStatusCode())) {
-            throw new NewsNotFoundException();
-        }
 
         List<Article> articles = parseExternalArticles(result.getBody().getArticles());
         return News.builder()
