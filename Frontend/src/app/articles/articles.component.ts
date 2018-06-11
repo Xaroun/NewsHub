@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Article} from '../article';
+import { ArticleService } from '../article.service';
+import { ArticleWrapper } from '../article-wrapper';
 
 @Component({
   selector: 'app-articles',
@@ -8,19 +9,15 @@ import { Article} from '../article';
 })
 export class ArticlesComponent implements OnInit {
 
-  article: Article = {
-    author: 'Jakub Mirowski',
-    title: 'Koniec z cenzurą kontrowersyjnych treści na Steamie',
-    description: 'Jak wynika z wydanego przez firmę Valve Software oświadczenia, już niedługo zrezygnuje ona z cenzurowania kontrowersyjnych gier na Steamie. Z platformy będą znikać wyłącznie tytuły o treściach nielegalnych oraz będące „oczywistym trollingiem”.',
-    date: '2018-06-07T14:37:00Z',
-    sourceName: 'Gry-online.pl',
-    articleUrl: 'https://www.gry-online.pl/S013.asp?ID=109608',
-    imageUrl: 'https://www.gry-online.pl/i/h/17/25340406.jpg'
-  };
+  articleWrapper: ArticleWrapper;
 
-  constructor() { }
+  constructor(private articleService: ArticleService) { }
 
   ngOnInit() {
+    this.getArticleWrapper();
   }
 
+  getArticleWrapper(): void {
+    this.articleService.getArticleWrapper().subscribe(articleWrapper => this.articleWrapper = articleWrapper);
+  }
 }
