@@ -1,13 +1,8 @@
 <h2>ALL ARTICLES</h2>
 <div *ngIf="articleWrapper">
   <ul>
-    <li *ngFor="let article of articleWrapper.articles">
-      {{article.title | uppercase}}
-      <br>
-      {{article.author}}
-      <br>
-      {{article.description}}
-      <br><br>
+    <li *ngFor="let articleFromWrapper of articleWrapper.articles">
+      <app-article-detail [article]="articleFromWrapper"></app-article-detail>
     </li>
   </ul>
 </div>
