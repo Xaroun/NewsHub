@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { ArticlesComponent } from './articles/articles.component';
 import { ArticleDetailComponent } from './article-detail/article-detail.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ArticlesComponent,
-    ArticleDetailComponent
+    ArticleDetailComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
