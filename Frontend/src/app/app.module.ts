@@ -8,6 +8,7 @@ import { ArticlesComponent } from './articles/articles.component';
 import { ArticleDetailComponent } from './article-detail/article-detail.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     AppComponent,
     ArticlesComponent,
     ArticleDetailComponent,
-    NavbarComponent
+    NavbarComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,
