@@ -1,6 +1,7 @@
 package com.kociszewski.news.service;
 
 import com.kociszewski.news.entity.News;
+import com.kociszewski.news.entity.QueryNews;
 import com.kociszewski.news.exception.NewsNotFoundException;
 
 import java.util.Optional;
@@ -10,4 +11,6 @@ import java.util.Optional;
  */
 public interface NewsService {
     Optional<News> getNewsByCountryAndCategory(String country, String category) throws NewsNotFoundException;
+
+    Optional<QueryNews> getNewsByQuery(String query);
 }

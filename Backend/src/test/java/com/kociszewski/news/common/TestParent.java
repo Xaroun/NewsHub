@@ -2,6 +2,7 @@ package com.kociszewski.news.common;
 
 import com.kociszewski.news.entity.Article;
 import com.kociszewski.news.entity.News;
+import com.kociszewski.news.entity.QueryNews;
 import org.junit.Before;
 
 import java.util.ArrayList;
@@ -14,7 +15,9 @@ public class TestParent {
 
     public static final String PL = "pl";
     public static final String TECHNOLOGY = "technology";
+    public static final String NEW_YORK = "new+york";
     private News news;
+    private QueryNews queryNews;
 
     @Before
     public void before() {
@@ -34,9 +37,18 @@ public class TestParent {
                 .category(TECHNOLOGY)
                 .articles(articles)
                 .build();
+
+        queryNews = QueryNews.builder()
+                .query(NEW_YORK)
+                .articles(articles)
+                .build();
     }
 
     protected News getNews() {
         return news;
+    }
+
+    protected QueryNews getQueryNews() {
+        return queryNews;
     }
 }

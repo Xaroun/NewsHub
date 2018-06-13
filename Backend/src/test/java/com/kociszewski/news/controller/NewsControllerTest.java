@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -54,22 +55,34 @@ public class NewsControllerTest extends TestParent {
 
     @Test
     public void getTechnologyNewsFromPoland_notFound() throws Exception {
-        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new NewsNotFoundException());
+        given(newsService.getNewsByCountryAndCategory(anyString(), anyString())).willThrow(new NewsNotFoundException());
 
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isNotFound());
 
-        verify(newsService, times(1)).getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any());
+        verify(newsService, times(1)).getNewsByCountryAndCategory(anyString(), anyString());
     }
 
     @Test
     public void getTechnologyNewsFromPoland_withInvalidApiKey() throws Exception {
-        given(newsService.getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any())).willThrow(new UnauthorizedException());
+        given(newsService.getNewsByCountryAndCategory(anyString(), anyString())).willThrow(new UnauthorizedException());
 
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isUnauthorized());
 
-        verify(newsService, times(1)).getNewsByCountryAndCategory(Mockito.anyString(), Mockito.any());
+        verify(newsService, times(1)).getNewsByCountryAndCategory(anyString(), anyString());
+    }
+
+    @Test
+    public void getQueryNews_shouldReturnProperNews() throws Exception {
+        given(newsService.getNewsByQuery(anyString())).willReturn(Optional.of(getQueryNews()));
+
+        mockMvc.perform(get("/news").param("search", NEW_YORK))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("query").value(NEW_YORK))
+                .andExpect(jsonPath("articles", hasSize(greaterThan(0))));
+
+        verify(newsService, times(1)).getNewsByQuery(NEW_YORK);
     }
 
 }

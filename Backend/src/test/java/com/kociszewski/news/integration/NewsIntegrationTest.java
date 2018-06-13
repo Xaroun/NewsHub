@@ -2,6 +2,7 @@ package com.kociszewski.news.integration;
 
 import com.kociszewski.news.entity.Article;
 import com.kociszewski.news.entity.News;
+import com.kociszewski.news.entity.QueryNews;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,22 @@ public class NewsIntegrationTest {
         assertThat(response.getBody().getCountry()).isEqualTo(PL);
         assertThat(response.getBody().getCategory()).isEqualTo(TECHNOLOGY);
         assertThat(response.getBody().getArticles().size()).isNotEqualTo(0);
+
+        Article article = response.getBody().getArticles().get(0);
+        assertThat(article.getArticleUrl()).isNotEmpty();
+        assertThat(article.getDate()).isNotEmpty();
+        assertThat(article.getSourceName()).isNotEmpty();
+        assertThat(article.getTitle()).isNotEmpty();
+    }
+
+    @Test
+    public void getQueryNews_returnsProperNewsObject() {
+        String query = "new+york";
+        ResponseEntity<QueryNews> response = testRestTemplate.getForEntity(String.format("/news?search=%s", query), QueryNews.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().getQuery()).isEqualTo(query);
+        assertThat(response.getBody().getArticles().size()).isNotEqualTo(0);
+
         Article article = response.getBody().getArticles().get(0);
         assertThat(article.getArticleUrl()).isNotEmpty();
         assertThat(article.getDate()).isNotEmpty();

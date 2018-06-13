@@ -1,10 +1,7 @@
 package com.kociszewski.news.service;
 
 import com.kociszewski.news.component.NewsRestTemplate;
-import com.kociszewski.news.entity.Article;
-import com.kociszewski.news.entity.ExternalArticle;
-import com.kociszewski.news.entity.ExternalNews;
-import com.kociszewski.news.entity.News;
+import com.kociszewski.news.entity.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -39,6 +36,24 @@ public class NewsServiceImpl implements NewsService{
         return Optional.of(News.builder()
                 .country(country)
                 .category(category)
+                .articles(articles)
+                .build());
+    }
+
+    @Override
+    public Optional<QueryNews> getNewsByQuery(String query) {
+        String uri = String.format("/top-headlines?q=%s", query);
+        ResponseEntity<ExternalNews> result;
+
+        try {
+            result = newsRestTemplate.getRequest(uri, ExternalNews.class);
+        } catch (HttpClientErrorException ex) {
+            return Optional.empty();
+        }
+
+        List<Article> articles = parseExternalArticles(result.getBody().getArticles());
+        return Optional.of(QueryNews.builder()
+                .query(query)
                 .articles(articles)
                 .build());
     }
