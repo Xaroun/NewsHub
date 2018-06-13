@@ -35,7 +35,9 @@ public class SwaggerConfig {
                                 new ResponseMessageBuilder()
                                         .code(401).message("Unauthorized due to invalid API key").build(),
                                 new ResponseMessageBuilder()
-                                        .code(404).message("News not found").build()));
+                                        .code(404).message("News not found").build(),
+                                new ResponseMessageBuilder()
+                                        .code(400).message("Obligatory param is empty").build()));
     }
 
     private ApiInfo myApiInfo() {
