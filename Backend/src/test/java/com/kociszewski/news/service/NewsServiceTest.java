@@ -2,14 +2,18 @@ package com.kociszewski.news.service;
 
 import com.kociszewski.news.common.TestParent;
 import com.kociszewski.news.entity.News;
+import com.kociszewski.news.entity.QueryNews;
+import com.kociszewski.news.exception.BadRequestException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -25,7 +29,7 @@ public class NewsServiceTest extends TestParent{
 
     @Test
     public void getNews_returnsNewsDetails() {
-        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).willReturn(Optional.of(getNews()));
+        given(newsService.getNewsByCountryAndCategory(anyString(), anyString())).willReturn(Optional.of(getNews()));
 
         Optional<News> news = newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY);
 
@@ -37,12 +41,32 @@ public class NewsServiceTest extends TestParent{
     }
 
     @Test
-    public void getNews_returnsNewsNotFound() throws Exception{
-        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).willReturn(Optional.empty());
+    public void getNews_returnsEmptyOptional() throws Exception{
+        given(newsService.getNewsByCountryAndCategory(anyString(), anyString())).willReturn(Optional.empty());
         Optional<News> news = newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY);
 
         assertThat(!news.isPresent());
 
         verify(newsService, times(1)).getNewsByCountryAndCategory(PL, TECHNOLOGY);
+    }
+
+    @Test
+    public void getQueryNews_returnsNewsDetails() throws Exception {
+        given(newsService.getNewsByQuery(anyString())).willReturn(Optional.of(getQueryNews()));
+
+        Optional<QueryNews> queryNews = newsService.getNewsByQuery(NEW_YORK);
+
+        assertThat(queryNews.get().getQuery()).isEqualTo(NEW_YORK);
+        assertThat(queryNews.get().getArticles()).hasSize(1);
+
+        verify(newsService, times(1)).getNewsByQuery(NEW_YORK);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void getQueryNews_throwsBadRequestException() throws Exception {
+        given(newsService.getNewsByQuery(anyString())).willThrow(new BadRequestException("Obligatory search param is empty"));
+
+        Optional<QueryNews> queryNews = newsService.getNewsByQuery("");
+        verify(newsService, times(1)).getNewsByQuery(NEW_YORK);
     }
 }

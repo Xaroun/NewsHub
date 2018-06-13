@@ -15,7 +15,7 @@ public class TestParent {
 
     public static final String PL = "pl";
     public static final String TECHNOLOGY = "technology";
-    public static final String NEW_YORK = "new+york";
+    public static final String NEW_YORK = "new york";
     private News news;
     private QueryNews queryNews;
 

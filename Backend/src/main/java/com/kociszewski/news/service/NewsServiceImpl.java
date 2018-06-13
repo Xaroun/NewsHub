@@ -2,6 +2,7 @@ package com.kociszewski.news.service;
 
 import com.kociszewski.news.component.NewsRestTemplate;
 import com.kociszewski.news.entity.*;
+import com.kociszewski.news.exception.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -22,6 +23,7 @@ public class NewsServiceImpl implements NewsService{
         this.newsRestTemplate = newsRestTemplate;
     }
 
+    @Override
     public Optional<News> getNewsByCountryAndCategory(String country, String category){
         String uri = String.format("/top-headlines?country=%s&category=%s", country, category);
         ResponseEntity<ExternalNews> result;
@@ -42,6 +44,10 @@ public class NewsServiceImpl implements NewsService{
 
     @Override
     public Optional<QueryNews> getNewsByQuery(String query) {
+        if(query.isEmpty()) {
+            throw new BadRequestException("Obligatory search param is empty");
+        }
+
         String uri = String.format("/top-headlines?q=%s", query);
         ResponseEntity<ExternalNews> result;
 

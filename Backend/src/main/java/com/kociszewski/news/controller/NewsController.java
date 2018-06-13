@@ -1,12 +1,14 @@
 package com.kociszewski.news.controller;
 
 import com.kociszewski.news.entity.News;
+import com.kociszewski.news.entity.QueryNews;
 import com.kociszewski.news.service.NewsService;
 import io.swagger.annotations.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.Query;
 import java.util.Optional;
 
 /**
@@ -32,5 +34,13 @@ public class NewsController {
     public ResponseEntity<News> getNewsByCountryAndCategory(@PathVariable String country, @PathVariable String category) {
         Optional<News> news = newsService.getNewsByCountryAndCategory(country, category);
         return news.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("Search news by query")
+    @ApiImplicitParam(name = "search", value = "Phrase to be searched for", required = true)
+    public ResponseEntity<QueryNews> getQueryNews(@RequestParam("search") String query) {
+        Optional<QueryNews> queryNews = newsService.getNewsByQuery(query);
+        return queryNews.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

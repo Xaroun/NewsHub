@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static com.kociszewski.news.common.TestParent.NEW_YORK;
 import static com.kociszewski.news.common.TestParent.PL;
 import static com.kociszewski.news.common.TestParent.TECHNOLOGY;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,10 +46,9 @@ public class NewsIntegrationTest {
 
     @Test
     public void getQueryNews_returnsProperNewsObject() {
-        String query = "new+york";
-        ResponseEntity<QueryNews> response = testRestTemplate.getForEntity(String.format("/news?search=%s", query), QueryNews.class);
+        ResponseEntity<QueryNews> response = testRestTemplate.getForEntity(String.format("/news?search=%s", NEW_YORK), QueryNews.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().getQuery()).isEqualTo(query);
+        assertThat(response.getBody().getQuery()).isEqualTo(NEW_YORK);
         assertThat(response.getBody().getArticles().size()).isNotEqualTo(0);
 
         Article article = response.getBody().getArticles().get(0);

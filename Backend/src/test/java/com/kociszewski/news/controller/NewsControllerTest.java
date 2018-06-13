@@ -1,6 +1,7 @@
 package com.kociszewski.news.controller;
 
 import com.kociszewski.news.common.TestParent;
+import com.kociszewski.news.exception.BadRequestException;
 import com.kociszewski.news.exception.NewsNotFoundException;
 import com.kociszewski.news.exception.UnauthorizedException;
 import com.kociszewski.news.service.NewsService;
@@ -83,6 +84,26 @@ public class NewsControllerTest extends TestParent {
                 .andExpect(jsonPath("articles", hasSize(greaterThan(0))));
 
         verify(newsService, times(1)).getNewsByQuery(NEW_YORK);
+    }
+
+    @Test
+    public void getQueryNews_withInvalidApiKey() throws Exception {
+        given(newsService.getNewsByQuery(anyString())).willThrow(new UnauthorizedException());
+
+        mockMvc.perform(get("/news").param("search", NEW_YORK))
+                .andExpect(status().isUnauthorized());
+
+        verify(newsService, times(1)).getNewsByQuery(anyString());
+    }
+
+    @Test
+    public void getQueryNews_withEmptyQuery() throws Exception {
+        given(newsService.getNewsByQuery(anyString())).willThrow(new BadRequestException("Obligatory search param is empty"));
+
+        mockMvc.perform(get("/news").param("search", ""))
+                .andExpect(status().isBadRequest());
+
+        verify(newsService, times(1)).getNewsByQuery(anyString());
     }
 
 }
