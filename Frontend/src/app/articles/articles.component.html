@@ -1,11 +1,9 @@
 <div *ngIf="articleWrapper">
-  <ul>
-    <li *ngFor="let articleFromWrapper of articleWrapper.articles">
+    <div class="articleCard" *ngFor="let articleFromWrapper of articleWrapper.articles">
       <app-article-detail [article]="articleFromWrapper"></app-article-detail>
-    </li>
-  </ul>
+    </div>
 
-  <div *ngIf="articleWrapper.articles.length == 0">
+  <div *ngIf="!articleWrapper.articles.length">
       <ngb-alert [dismissible]="false">
         <p class="message"><strong>Nie udało się znaleźć żadnego artykułu o podanym kryterium.</strong></p>
       </ngb-alert></div>
