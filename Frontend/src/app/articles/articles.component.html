@@ -4,5 +4,9 @@
       <app-article-detail [article]="articleFromWrapper"></app-article-detail>
     </li>
   </ul>
-</div>
 
+  <div *ngIf="articleWrapper.articles.length == 0">
+      <ngb-alert [dismissible]="false">
+        <p class="message"><strong>Nie udało się znaleźć żadnego artykułu o podanym kryterium.</strong></p>
+      </ngb-alert></div>
+</div>

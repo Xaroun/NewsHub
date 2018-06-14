@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ArticleService } from '../article.service';
 import { ArticleWrapper } from '../article-wrapper';
 import { ActivatedRoute } from '@angular/router';
-import {Location} from '@angular/common';
-import {log} from 'util';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-articles',
@@ -26,8 +25,6 @@ export class ArticlesComponent implements OnInit {
         this.getArticleWrapper();
       });
   }
-
-
 
   getArticleWrapper(): void {
     const category = this.route.snapshot.paramMap.get('category');
