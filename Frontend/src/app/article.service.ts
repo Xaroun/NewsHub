@@ -9,11 +9,12 @@ import { ArticleWrapper } from './article-wrapper';
 })
 export class ArticleService {
 
-  private articlesUrl = 'http://127.0.0.1:8080/api/news/pl/technology';
+  private baseUrl = 'http://127.0.0.1:8080/api/news/pl/';
 
   constructor(private http: HttpClient) { }
 
-  getArticleWrapper(): Observable<ArticleWrapper> {
-    return this.http.get<ArticleWrapper>(this.articlesUrl);
+  getArticleWrapper(category: string): Observable<ArticleWrapper> {
+    const finalUrl = this.baseUrl + category;
+    return this.http.get<ArticleWrapper>(finalUrl);
   }
 }
