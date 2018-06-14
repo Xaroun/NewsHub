@@ -16,7 +16,6 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping(value = "/news", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "http://localhost:4200")
 public class NewsController {
 
     private final NewsService newsService;
