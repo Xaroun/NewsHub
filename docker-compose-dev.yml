@@ -8,3 +8,11 @@ services:
             newshub-backend:latest
         ports:
             - "8080:8080"
+    frontend:
+        build:
+            context: ./Frontend
+            dockerfile: $PWD/Docker/Dockerfile.frontend
+        image:
+            newshub-frontend:latest
+        ports:
+            - "4200:4200"

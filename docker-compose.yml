@@ -5,3 +5,8 @@ services:
             xaroun/newshub-backend:latest
         ports:
             - "8080:8080"
+    frontend:
+        image:
+            xaroun/newshub-frontend:latest
+        ports:
+            - "4200:4200"
