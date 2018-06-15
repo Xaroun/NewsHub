@@ -9,4 +9,4 @@ services:
         image:
             xaroun/newshub-frontend:latest
         ports:
-            - "4200:4200"
+            - "80:4200"
