@@ -30,4 +30,4 @@ Simple application for displaying news with two use cases:
 1. Wait until images will be rebuilt and containers started.
 1. Verify your changes.
 
-Powered by [NewsAPI.org](https://newsapi.org)
+### Powered by [NewsAPI.org](https://newsapi.org)
