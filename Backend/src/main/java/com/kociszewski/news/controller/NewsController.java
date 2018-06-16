@@ -39,13 +39,18 @@ public class NewsController {
     @ApiOperation("Search news by query")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "search", value = "Phrase to be searched for", required = true),
-        @ApiImplicitParam(name = "pageSize", value = "Size of page", required = true),
-        @ApiImplicitParam(name = "pageNumber", value = "Number of page", required = true)
+        @ApiImplicitParam(name = "pageSize", value = "Size of page", required = false),
+        @ApiImplicitParam(name = "pageNumber", value = "Number of page", required = false)
     })
     public ResponseEntity<QueryNews> getQueryNews(@RequestParam("search") String query,
-                                                  @RequestParam("pageSize") int pageSize,
-                                                  @RequestParam("pageNumber") int pageNumber) {
-        Optional<QueryNews> queryNews = newsService.getNewsByQuery(query, pageSize, pageNumber);
+                                                  @RequestParam("pageSize") Optional<Integer> pageSize,
+                                                  @RequestParam("pageNumber") Optional<Integer> pageNumber) {
+        Optional<QueryNews> queryNews;
+        if(pageSize.isPresent() && pageNumber.isPresent()) {
+            queryNews = newsService.getNewsByQueryWithPaging(query, pageSize.get(), pageNumber.get());
+        } else {
+            queryNews = newsService.getNewsByQuery(query);
+        }
         return queryNews.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

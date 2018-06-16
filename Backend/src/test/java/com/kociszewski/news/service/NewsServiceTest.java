@@ -53,21 +53,41 @@ public class NewsServiceTest extends TestParent{
 
     @Test
     public void getQueryNews_returnsNewsDetails() throws Exception {
-        given(newsService.getNewsByQuery(anyString(), anyInt(), anyInt())).willReturn(Optional.of(getQueryNews()));
+        given(newsService.getNewsByQuery(anyString())).willReturn(Optional.of(getQueryNews()));
 
-        Optional<QueryNews> queryNews = newsService.getNewsByQuery(NEW_YORK, Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
+        Optional<QueryNews> queryNews = newsService.getNewsByQuery(NEW_YORK);
 
         assertThat(queryNews.get().getQuery()).isEqualTo(NEW_YORK);
         assertThat(queryNews.get().getArticles()).hasSize(1);
 
-        verify(newsService, times(1)).getNewsByQuery(NEW_YORK, Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
+        verify(newsService, times(1)).getNewsByQuery(NEW_YORK);
     }
 
     @Test(expected = BadRequestException.class)
     public void getQueryNews_throwsBadRequestException() throws Exception {
-        given(newsService.getNewsByQuery(anyString(), anyInt(), anyInt())).willThrow(new BadRequestException("Obligatory search param is empty"));
+        given(newsService.getNewsByQuery(anyString())).willThrow(new BadRequestException("Obligatory search param is empty"));
 
-        Optional<QueryNews> queryNews = newsService.getNewsByQuery("", Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
-        verify(newsService, times(1)).getNewsByQuery(NEW_YORK, Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
+        Optional<QueryNews> queryNews = newsService.getNewsByQuery("");
+        verify(newsService, times(1)).getNewsByQuery(NEW_YORK);
+    }
+
+    @Test
+    public void getQueryNewsWithPaging_returnsNewsDetails() throws Exception {
+        given(newsService.getNewsByQueryWithPaging(anyString(), anyInt(), anyInt())).willReturn(Optional.of(getQueryNews()));
+
+        Optional<QueryNews> queryNews = newsService.getNewsByQueryWithPaging(NEW_YORK, Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
+
+        assertThat(queryNews.get().getQuery()).isEqualTo(NEW_YORK);
+        assertThat(queryNews.get().getArticles()).hasSize(1);
+
+        verify(newsService, times(1)).getNewsByQueryWithPaging(NEW_YORK, Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void getQueryNewsWithPaging_throwsBadRequestException() throws Exception {
+        given(newsService.getNewsByQueryWithPaging(anyString(), anyInt(), anyInt())).willThrow(new BadRequestException("Obligatory search param is empty"));
+
+        Optional<QueryNews> queryNews = newsService.getNewsByQueryWithPaging("", Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
+        verify(newsService, times(1)).getNewsByQueryWithPaging(NEW_YORK, Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
     }
 }

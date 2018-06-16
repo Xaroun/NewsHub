@@ -3,6 +3,7 @@ package com.kociszewski.news.service;
 import com.kociszewski.news.component.NewsRestTemplate;
 import com.kociszewski.news.entity.*;
 import com.kociszewski.news.exception.BadRequestException;
+import io.swagger.models.auth.In;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -43,12 +44,16 @@ public class NewsServiceImpl implements NewsService{
     }
 
     @Override
-    public Optional<QueryNews> getNewsByQuery(String query, int pageSize, int pageNumber) {
+    public Optional<QueryNews> getNewsByQuery(String query) {
         if(query.isEmpty()) {
             throw new BadRequestException("Obligatory search param is empty");
         }
 
-        String uri = String.format("/everything?q=%s&pageSize=%d&page=%d", query, pageSize, pageNumber);
+        String uri = String.format("/top-headlines?q=%s", query);
+        return getQueryNews(query, uri);
+    }
+
+    private Optional<QueryNews> getQueryNews(String query, String uri) {
         ResponseEntity<ExternalNews> result;
 
         try {
@@ -62,6 +67,16 @@ public class NewsServiceImpl implements NewsService{
                 .query(query)
                 .articles(articles)
                 .build());
+    }
+
+    @Override
+    public Optional<QueryNews> getNewsByQueryWithPaging(String query, Integer pageSize, Integer pageNumber) {
+        if(query.isEmpty()) {
+            throw new BadRequestException("Obligatory search param is empty");
+        }
+
+        String uri = String.format("/top-headlines?q=%s&pageSize=%d&page=%d", query, pageSize, pageNumber);
+        return getQueryNews(query, uri);
     }
 
     private List<Article> parseExternalArticles(List<ExternalArticle> externalArticles) {

@@ -12,5 +12,7 @@ import java.util.Optional;
 public interface NewsService {
     Optional<News> getNewsByCountryAndCategory(String country, String category) throws NewsNotFoundException;
 
-    Optional<QueryNews> getNewsByQuery(String query, int pageSize, int pageNumber);
+    Optional<QueryNews> getNewsByQuery(String query);
+
+    Optional<QueryNews> getNewsByQueryWithPaging(String query, Integer pageSize, Integer pageNumber);
 }
