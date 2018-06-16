@@ -37,9 +37,15 @@ public class NewsController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Search news by query")
-    @ApiImplicitParam(name = "search", value = "Phrase to be searched for", required = true)
-    public ResponseEntity<QueryNews> getQueryNews(@RequestParam("search") String query) {
-        Optional<QueryNews> queryNews = newsService.getNewsByQuery(query);
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "search", value = "Phrase to be searched for", required = true),
+        @ApiImplicitParam(name = "pageSize", value = "Size of page", required = true),
+        @ApiImplicitParam(name = "pageNumber", value = "Number of page", required = true)
+    })
+    public ResponseEntity<QueryNews> getQueryNews(@RequestParam("search") String query,
+                                                  @RequestParam("pageSize") int pageSize,
+                                                  @RequestParam("pageNumber") int pageNumber) {
+        Optional<QueryNews> queryNews = newsService.getNewsByQuery(query, pageSize, pageNumber);
         return queryNews.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

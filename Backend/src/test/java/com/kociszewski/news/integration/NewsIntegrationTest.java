@@ -46,10 +46,10 @@ public class NewsIntegrationTest {
 
     @Test
     public void getQueryNews_returnsProperNewsObject() {
-        ResponseEntity<QueryNews> response = testRestTemplate.getForEntity(String.format("/news?search=%s", NEW_YORK), QueryNews.class);
+        ResponseEntity<QueryNews> response = testRestTemplate.getForEntity(String.format("/news?search=%s&pageSize=%d&pageNumber=%d", NEW_YORK, 2, 1), QueryNews.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getQuery()).isEqualTo(NEW_YORK);
-        assertThat(response.getBody().getArticles().size()).isNotEqualTo(0);
+        assertThat(response.getBody().getArticles().size()).isEqualTo(2);
 
         Article article = response.getBody().getArticles().get(0);
         assertThat(article.getArticleUrl()).isNotEmpty();

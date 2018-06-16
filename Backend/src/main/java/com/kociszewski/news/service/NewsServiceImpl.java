@@ -43,12 +43,12 @@ public class NewsServiceImpl implements NewsService{
     }
 
     @Override
-    public Optional<QueryNews> getNewsByQuery(String query) {
+    public Optional<QueryNews> getNewsByQuery(String query, int pageSize, int pageNumber) {
         if(query.isEmpty()) {
             throw new BadRequestException("Obligatory search param is empty");
         }
 
-        String uri = String.format("/top-headlines?q=%s", query);
+        String uri = String.format("/everything?q=%s&pageSize=%d&page=%d", query, pageSize, pageNumber);
         ResponseEntity<ExternalNews> result;
 
         try {

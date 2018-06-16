@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -42,7 +43,7 @@ public class NewsControllerTest extends TestParent {
 
     @Test
     public void getTechnologyNewsFromPoland_shouldReturnProperNews() throws Exception {
-        given(newsService.getNewsByCountryAndCategory(PL, TECHNOLOGY)).
+        given(newsService.getNewsByCountryAndCategory(anyString(), anyString())).
                 willReturn(Optional.of(getNews()));
 
         mockMvc.perform(get("/news/pl/technology"))
@@ -61,7 +62,7 @@ public class NewsControllerTest extends TestParent {
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isNotFound());
 
-        verify(newsService, times(1)).getNewsByCountryAndCategory(anyString(), anyString());
+        verify(newsService, times(1)).getNewsByCountryAndCategory(PL, TECHNOLOGY);
     }
 
     @Test
@@ -71,39 +72,48 @@ public class NewsControllerTest extends TestParent {
         mockMvc.perform(get("/news/pl/technology"))
                 .andExpect(status().isUnauthorized());
 
-        verify(newsService, times(1)).getNewsByCountryAndCategory(anyString(), anyString());
+        verify(newsService, times(1)).getNewsByCountryAndCategory(PL, TECHNOLOGY);
     }
 
     @Test
     public void getQueryNews_shouldReturnProperNews() throws Exception {
-        given(newsService.getNewsByQuery(anyString())).willReturn(Optional.of(getQueryNews()));
+        given(newsService.getNewsByQuery(anyString(), anyInt(), anyInt())).willReturn(Optional.of(getQueryNews()));
 
-        mockMvc.perform(get("/news").param("search", NEW_YORK))
+        mockMvc.perform(get("/news")
+                    .param("search", NEW_YORK)
+                    .param("pageSize", PAGE_SIZE)
+                    .param("pageNumber", PAGE_NUMBER))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("query").value(NEW_YORK))
-                .andExpect(jsonPath("articles", hasSize(greaterThan(0))));
+                .andExpect(jsonPath("articles", hasSize(Integer.parseInt(PAGE_SIZE))));
 
-        verify(newsService, times(1)).getNewsByQuery(NEW_YORK);
+        verify(newsService, times(1)).getNewsByQuery(NEW_YORK, Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
     }
 
     @Test
     public void getQueryNews_withInvalidApiKey() throws Exception {
-        given(newsService.getNewsByQuery(anyString())).willThrow(new UnauthorizedException());
+        given(newsService.getNewsByQuery(anyString(), anyInt(), anyInt())).willThrow(new UnauthorizedException());
 
-        mockMvc.perform(get("/news").param("search", NEW_YORK))
+        mockMvc.perform(get("/news")
+                    .param("search", NEW_YORK)
+                    .param("pageSize", PAGE_SIZE)
+                    .param("pageNumber", PAGE_NUMBER))
                 .andExpect(status().isUnauthorized());
 
-        verify(newsService, times(1)).getNewsByQuery(anyString());
+        verify(newsService, times(1)).getNewsByQuery(NEW_YORK, Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
     }
 
     @Test
     public void getQueryNews_withEmptyQuery() throws Exception {
-        given(newsService.getNewsByQuery(anyString())).willThrow(new BadRequestException("Obligatory search param is empty"));
+        given(newsService.getNewsByQuery(anyString(), anyInt(), anyInt())).willThrow(new BadRequestException("Obligatory search param is empty"));
 
-        mockMvc.perform(get("/news").param("search", ""))
+        mockMvc.perform(get("/news")
+                    .param("search", "")
+                    .param("pageSize", PAGE_SIZE)
+                    .param("pageNumber", PAGE_NUMBER))
                 .andExpect(status().isBadRequest());
 
-        verify(newsService, times(1)).getNewsByQuery(anyString());
+        verify(newsService, times(1)).getNewsByQuery("", Integer.parseInt(PAGE_SIZE), Integer.parseInt(PAGE_NUMBER));
     }
 
 }

@@ -16,6 +16,8 @@ public class TestParent {
     public static final String PL = "pl";
     public static final String TECHNOLOGY = "technology";
     public static final String NEW_YORK = "new york";
+    public static final String PAGE_SIZE = "1";
+    public static final String PAGE_NUMBER = "1";
     private News news;
     private QueryNews queryNews;
 
