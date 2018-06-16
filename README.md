@@ -15,7 +15,12 @@ Simple application for displaying news with two use cases:
 * Docker
 
 ### To develop:
+#### Frontend
 * Node.js
+* npm
+* Angular CLI
+
+#### Backend
 * Java
 * Gradle
 
