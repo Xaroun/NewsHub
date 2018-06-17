@@ -1,12 +1,5 @@
 <div class="list-group">
   <a class="list-group-item list-group-item-action">Kategorie</a>
 
-  <a routerLink="/articles/business" class="list-group-item list-group-item-action list-group-item-primary">Biznes</a>
-  <a routerLink="/articles/entertainment" class="list-group-item list-group-item-action list-group-item-secondary">Rozrywka</a>
-  <a routerLink="/articles/general" class="list-group-item list-group-item-action list-group-item-success">Ogólne</a>
-  <a routerLink="/articles/health" class="list-group-item list-group-item-action list-group-item-danger">Zdrowie</a>
-  <a routerLink="/articles/science" class="list-group-item list-group-item-action list-group-item-warning">Nauka</a>
-  <a routerLink="/articles/sport" class="list-group-item list-group-item-action list-group-item-info">Sport</a>
-  <a routerLink="/articles/technology" class="list-group-item list-group-item-action list-group-item-light">Technologia</a>
-  <img src="https://material.io/tools/icons/static/icons/baseline-card_travel-24px.svg" height="50" width="50">
+  <a *ngFor="let category of categories" routerLink="/articles/{{category.id}}" class="list-group-item list-group-item-action list-group-item-primary">{{category.name}}</a>
 </div>
