@@ -13,6 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.kociszewski.news.common.TestParent.BIZNES;
+import static com.kociszewski.news.common.TestParent.BUSINESS;
+import static com.kociszewski.news.common.TestParent.LINK;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -31,9 +34,9 @@ public class CategoryIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         List<Category> categories = Arrays.asList(response.getBody());
         assertThat(categories.size()).isEqualTo(7);
-        assertThat(categories.get(0).getId()).isEqualTo("business");
-        assertThat(categories.get(0).getName()).isEqualTo("Biznes");
-        assertThat(categories.get(0).getIconUrl()).isEqualTo("https://material.io/tools/icons/static/icons/baseline-work-24px.svg");
+        assertThat(categories.get(0).getId()).isEqualTo(BUSINESS);
+        assertThat(categories.get(0).getName()).isEqualTo(BIZNES);
+        assertThat(categories.get(0).getIconUrl()).isEqualTo(LINK);
 
     }
 }

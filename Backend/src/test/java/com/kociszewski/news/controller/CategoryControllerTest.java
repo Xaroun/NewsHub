@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.kociszewski.news.common.TestParent.BIZNES;
+import static com.kociszewski.news.common.TestParent.BUSINESS;
+import static com.kociszewski.news.common.TestParent.LINK;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -42,9 +45,9 @@ public class CategoryControllerTest {
         categories = new ArrayList<>();
 
         Category businessCategory = Category.builder()
-                .id("business")
-                .name("Biznes")
-                .iconUrl("https://material.io/tools/icons/static/icons/baseline-work-24px.svg")
+                .id(BUSINESS)
+                .name(BIZNES)
+                .iconUrl(LINK)
                 .build();
 
         categories.add(businessCategory);
@@ -57,9 +60,9 @@ public class CategoryControllerTest {
 
         mockMvc.perform(get("/category"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("[0].id").value("business"))
-                .andExpect(jsonPath("[0].name").value("Biznes"))
-                .andExpect(jsonPath("[0].iconUrl").value("https://material.io/tools/icons/static/icons/baseline-work-24px.svg"));
+                .andExpect(jsonPath("[0].id").value(BUSINESS))
+                .andExpect(jsonPath("[0].name").value(BIZNES))
+                .andExpect(jsonPath("[0].iconUrl").value(LINK));
 
         verify(categoryService, times(1)).getCategories();
     }

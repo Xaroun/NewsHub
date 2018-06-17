@@ -10,6 +10,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kociszewski.news.common.TestParent.BIZNES;
+import static com.kociszewski.news.common.TestParent.BUSINESS;
+import static com.kociszewski.news.common.TestParent.LINK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
@@ -29,9 +32,9 @@ public class CategoryServiceTest {
         categories = new ArrayList<>();
 
         Category businessCategory = Category.builder()
-                .id("business")
-                .name("Biznes")
-                .iconUrl("https://material.io/tools/icons/static/icons/baseline-work-24px.svg")
+                .id(BUSINESS)
+                .name(BIZNES)
+                .iconUrl(LINK)
                 .build();
 
         categories.add(businessCategory);
@@ -43,9 +46,9 @@ public class CategoryServiceTest {
 
         List<Category> categories = categoryService.getCategories();
 
-        assertThat(categories.size()).isEqualTo(7);
-        assertThat(categories.get(0).getId()).isEqualTo("business");
-        assertThat(categories.get(0).getName()).isEqualTo("Biznes");
-        assertThat(categories.get(0).getIconUrl()).isEqualTo("https://material.io/tools/icons/static/icons/baseline-work-24px.svg");
+        assertThat(categories.size()).isEqualTo(1);
+        assertThat(categories.get(0).getId()).isEqualTo(BUSINESS);
+        assertThat(categories.get(0).getName()).isEqualTo(BIZNES);
+        assertThat(categories.get(0).getIconUrl()).isEqualTo(LINK);
     }
 }

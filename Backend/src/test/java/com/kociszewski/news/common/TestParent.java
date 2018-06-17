@@ -18,6 +18,10 @@ public class TestParent {
     public static final String NEW_YORK = "new york";
     public static final String PAGE_SIZE = "1";
     public static final String PAGE_NUMBER = "1";
+    public static final String BUSINESS = "business";
+    public static final String BIZNES = "Biznes";
+    public static final String LINK = "https://material.io/tools/icons/static/icons/baseline-work-24px.svg";
+
     private News news;
     private QueryNews queryNews;
 
