@@ -1,4 +1,4 @@
-<div *ngIf="articleWrapper">
+<div *ngIf="articleWrapper" class="articles-list">
     <div class="articleCard" *ngFor="let articleFromWrapper of articleWrapper.articles">
       <app-article-detail [article]="articleFromWrapper"></app-article-detail>
     </div>
