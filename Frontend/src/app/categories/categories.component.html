@@ -1,5 +1,8 @@
 <div class="list-group">
-  <a class="list-group-item list-group-item-action">Kategorie</a>
+  <a class="list-group-item list-group-item-action"><h4>Kategorie</h4></a>
 
-  <a *ngFor="let category of categories" routerLink="/articles/{{category.id}}" class="list-group-item list-group-item-action list-group-item-primary">{{category.name}}</a>
+  <a *ngFor="let category of categories" routerLink="/articles/{{category.id}}" class="list-group-item list-group-item-action list-group-item-primary">
+    <img class="icons" src="{{category.iconUrl}}"/>
+    <h4 class="category-name">{{category.name}}</h4>
+  </a>
 </div>

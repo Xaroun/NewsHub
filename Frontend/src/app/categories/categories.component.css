@@ -3,3 +3,20 @@
   padding-left: 25%;
   padding-right: 25%;
 }
+
+.icons {
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+  position: absolute;
+}
+
+.category-name {
+  color: black;
+  margin-left: 70px;
+}
+
+.list-group-item {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
