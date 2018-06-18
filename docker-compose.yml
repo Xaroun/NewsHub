@@ -1,12 +1,12 @@
 version: '3'
 services:
     backend:
-        image:
-            xaroun/newshub-backend:latest
+        container_name: backend
+        image: xaroun/newshub-backend:latest
         ports:
             - "8080:8080"
     frontend:
-        image:
-            xaroun/newshub-frontend:latest
+        container_name: frontend
+        image: xaroun/newshub-frontend:latest
         ports:
             - "80:4200"

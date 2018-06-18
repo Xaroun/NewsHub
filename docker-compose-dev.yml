@@ -1,6 +1,7 @@
 version: '3'
 services:
     backend:
+        container_name: backend
         build:
             context: ./Backend
             dockerfile: $PWD/Docker/Dockerfile.backend
@@ -9,6 +10,7 @@ services:
         ports:
             - "8080:8080"
     frontend:
+        container_name: frontend
         build:
             context: ./Frontend
             dockerfile: $PWD/Docker/Dockerfile.frontend
