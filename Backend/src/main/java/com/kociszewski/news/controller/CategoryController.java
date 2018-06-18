@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.List;
 /**
  * Created by mateusz on 17.06.2018.
  */
-@RestController("/category")
+@RestController
+@RequestMapping(value = "/category", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoryController {
 
     private CategoryService categoryService;
@@ -24,7 +26,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ApiOperation("Get all available categories")
     public ResponseEntity<List<Category>> getCategories() {
         List<Category> categories = categoryService.getCategories();

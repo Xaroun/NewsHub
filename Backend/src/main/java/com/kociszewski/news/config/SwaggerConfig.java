@@ -1,5 +1,6 @@
 package com.kociszewski.news.config;
 
+import com.google.common.base.Predicate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +13,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import static com.google.common.base.Predicates.or;
 import static com.google.common.collect.Lists.newArrayList;
 import static springfox.documentation.builders.PathSelectors.regex;
 
@@ -28,7 +30,7 @@ public class SwaggerConfig {
                 .apiInfo(myApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(regex("/news.*"))
+                .paths(getSwaggerPaths())
                 .build()
                 .globalResponseMessage(RequestMethod.GET,
                         newArrayList(
@@ -38,6 +40,11 @@ public class SwaggerConfig {
                                         .code(404).message("News not found").build(),
                                 new ResponseMessageBuilder()
                                         .code(400).message("Obligatory param is empty").build()));
+    }
+
+    private Predicate<String> getSwaggerPaths() {
+        return or(regex("/news.*"),
+                  regex("/category.*"));
     }
 
     private ApiInfo myApiInfo() {
