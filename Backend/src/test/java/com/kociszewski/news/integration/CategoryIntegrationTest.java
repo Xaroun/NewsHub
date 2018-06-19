@@ -30,7 +30,7 @@ public class CategoryIntegrationTest {
 
     @Test
     public void getCategory_returnsCategories() {
-        ResponseEntity<Category[]> response = testRestTemplate.getForEntity("/categories", Category[].class);
+        ResponseEntity<Category[]> response = testRestTemplate.getForEntity("/category", Category[].class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         List<Category> categories = Arrays.asList(response.getBody());
         assertThat(categories.size()).isEqualTo(7);
