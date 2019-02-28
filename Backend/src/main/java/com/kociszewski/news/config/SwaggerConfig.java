@@ -51,7 +51,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("NewsHub API")
                 .description("This API provides news served by external API (newsapi.org)")
-                .contact(new Contact("Mateusz Kociszewski", "https://github.com/Xaroun", "mkociszewski@icloud.com"))
+                .contact(new Contact("Xaroun", "https://github.com/Xaroun", "xaroun@example.com"))
                 .build();
     }
 }
